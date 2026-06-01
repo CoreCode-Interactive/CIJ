@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_OVERRIDE</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            margin: 0;
+            overflow: hidden;
+        }
+        #terminal {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #000;
+            border: 1px solid #33ff33;
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.4);
+            padding: 20px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #output {
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #prompt {
+            color: #33ff33;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #user-input {
+            background: transparent;
+            border: none;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            flex-grow: 1;
+            outline: none;
+        }
+        /* Custom scrollbar for retro look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #33ff33; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div id="terminal">
+    <div id="output"></div>
+    <div id="input-line">
+        <span id="prompt">ARCHITECT_SYS_>$</span>
+        <input type="text" id="user-input" autofocus autocomplete="off" autocapitalize="off">
+    </div>
+</div>
+
+<script>
+    const output = document.getElementById('output');
+    const userInput = document.getElementById('user-input');
+
+    // Inside joke or memory password (make sure it's lowercase here)
+    const SECRET_PASSWORD = "stay in the light"; 
+
+    const bootLines = [
+        "LOG_IN: SYSTEM_OVERRIDE...",
+        "CRITICAL:_ INTERNAL_SECURITY_COMPROMISED",
+        "LEAK_DETECTED:_ TARGET_EXPECTS_CHICAGO_TIMELINE",
+        "--------------------------------------------------",
+        "THE ARCHITECT PROTOCOL HAS RE-ROUTED ENCRYPTION.",
+        "YOU KNOW THE STAGE, BUT YOU DO NOT KNOW THE PLAYERS.",
+        "ENTER THE PASSWORD TO ACCESS ACCR_CENTRE TICKET DATA.",
+        "HINT: Check the light.",
+        " "
+    ];
+
+    let lineIndex = 0;
+
+    function printBootSequence() {
+        if (lineIndex < bootLines.length) {
+            output.innerHTML += bootLines[lineIndex] + "\n";
+            lineIndex++;
+            output.scrollTop = output.scrollHeight;
+            setTimeout(printBootSequence, 400); // Speed of text printing
+        }
+    }
+
+    userInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const command = userInput.value.trim();
+            output.innerHTML += `<span style="color: #fff;">ARCHITECT_SYS_>$ ${command}</span>\n`;
+            
+            if (command.toLowerCase() === SECRET_PASSWORD) {
+                output.innerHTML += `<span style="color: #00ff00; font-weight: bold;">\n[ACCESS GRANTED]</span>\n`;
+                output.innerHTML += `CRITICAL ERROR: Transmission intercepted by cast members.\n`;
+                output.innerHTML += `ERROR DETECTED AT THE VENDOR GATEWAY.\n\n`;
+                output.innerHTML += `<span style="color: #ffff00; font-weight: bold;">[SCREENSHOT TICKET UNLOCKED]</span>\n`;
+                output.innerHTML += `LINK: <a href="YOUR_SCREENSHOT_IMAGE_LINK_HERE" target="_blank" style="color: #00ffff;">Click here to claim assets</a>\n`;
+                output.innerHTML += `HINT FOR STAGE 2: Keep an eye on the program before the music starts...`;
+                userInput.disabled = true;
+                document.getElementById('input-line').style.display = 'none';
+            } else {
+                output.innerHTML += `<span style="color: #ff3333;">ACCESS DENIED: INSUFFICIENT PERMISSIONS. OBLIVIOUS STATUS ACTIVE.</span>\n\n`;
+            }
+            
+            userInput.value = '';
+            output.scrollTop = output.scrollHeight;
+        }
+    });
+
+    // Start the game
+    printBootSequence();
+</script>
+
+</body>
+</html>
