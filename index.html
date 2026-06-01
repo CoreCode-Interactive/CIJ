@@ -5,52 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYSTEM_OVERRIDE</title>
     <style>
+        /* Mobile-friendly resets */
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             background-color: #0a0a0a;
             color: #33ff33;
             font-family: 'Courier New', Courier, monospace;
-            padding: 20px;
+            padding: 10px; /* Reduced padding for smaller screens */
             margin: 0;
-            overflow: hidden;
-        }
-        #terminal {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #000;
-            border: 1px solid #33ff33;
-            box-shadow: 0 0 15px rgba(51, 255, 51, 0.4);
-            padding: 20px;
-            height: 80vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        
+        #terminal {
+            width: 100%;
+            max-width: 800px;
+            margin: auto; /* Centers the terminal vertically and horizontally */
+            background-color: #000;
+            border: 1px solid #33ff33;
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.4);
+            padding: 15px;
+            /* Flex setup ensures it shrinks nicely when the mobile keyboard appears */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            max-height: 85vh; 
+        }
+        
         #output {
             flex-grow: 1;
             overflow-y: auto;
             white-space: pre-wrap;
             margin-bottom: 10px;
             line-height: 1.4;
+            font-size: 14px; /* Slightly smaller base font for mobile wrapping */
         }
+        
         #input-line {
             display: flex;
             align-items: center;
+            border-top: 1px dashed #33ff3333; /* Visual separator for typing area */
+            padding-top: 10px;
         }
+        
         #prompt {
             color: #33ff33;
             margin-right: 10px;
             font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap; /* Prevents the prompt from splitting into two lines */
         }
+        
         #user-input {
             background: transparent;
             border: none;
             color: #33ff33;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
+            font-size: 16px; /* Crucial: 16px prevents iOS Safari from auto-zooming on focus */
             flex-grow: 1;
             outline: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
         }
+        
         /* Custom scrollbar for retro look */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #33ff33; border-radius: 4px; }
     </style>
@@ -68,8 +92,9 @@
 <script>
     const output = document.getElementById('output');
     const userInput = document.getElementById('user-input');
+    const terminal = document.getElementById('terminal');
 
-    // Inside joke or memory password (make sure it's lowercase here)
+    // Inside joke or memory password 
     const SECRET_PASSWORD = "no wifi elders + little ones"; 
 
     const bootLines = [
@@ -94,9 +119,16 @@
             output.innerHTML += bootLines[lineIndex] + "\n";
             lineIndex++;
             output.scrollTop = output.scrollHeight;
-            setTimeout(printBootSequence, 400); // Speed of text printing
+            setTimeout(printBootSequence, 400); 
         }
     }
+
+    // Mobile UX Improvement: Tapping anywhere inside the terminal focuses the keyboard
+    terminal.addEventListener('click', function() {
+        if (!userInput.disabled) {
+            userInput.focus();
+        }
+    });
 
     userInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
@@ -117,7 +149,10 @@
             }
             
             userInput.value = '';
-            output.scrollTop = output.scrollHeight;
+            // Added a slight delay to allow mobile browsers layout recalculation before scrolling
+            setTimeout(() => {
+                output.scrollTop = output.scrollHeight;
+            }, 50);
         }
     });
 
