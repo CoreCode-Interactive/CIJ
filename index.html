@@ -214,9 +214,9 @@ userInput.addEventListener('keydown', function(event) {
         output.innerHTML += `\n<span style="color: #fff;">ARCHITECT_SYS_>$ ${command.toUpperCase()}</span>\n`;
         
         if (command === answers[answerIndex]) {
+            answerIndex++;
             if (answerIndex < nextQuestion.length) {
-                printLines(nextQuestion[answerIndex]);
-                answerIndex++; 
+                printLines(nextQuestion[answerIndex - 1]);
             } else {
                 output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: [${SECRET_PASSWORD}]</span>\n\n`;
                 userInput.disabled = true;
