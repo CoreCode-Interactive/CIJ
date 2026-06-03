@@ -218,7 +218,7 @@ userInput.addEventListener('keydown', function(event) {
             if (answerIndex < nextQuestion.length) {
                 printLines(nextQuestion[answerIndex - 1]);
             } else {
-                output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: [${SECRET_PASSWORD}]</span>\n\n`;
+                output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: <a href="Screenshot 2026-06-03 5.53.07 PM.png">click to claim ticket</a></span>\n\n`;
                 userInput.disabled = true;
                 document.getElementById('input-line').style.display = 'none';
             }
