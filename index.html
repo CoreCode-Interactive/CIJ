@@ -90,74 +90,208 @@
 </div>
 
 <script>
-    const output = document.getElementById('output');
-    const userInput = document.getElementById('user-input');
-    const terminal = document.getElementById('terminal');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_OVERRIDE</title>
+    <style>
+        /* Mobile-friendly resets */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px; /* Reduced padding for smaller screens */
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #terminal {
+            width: 100%;
+            max-width: 800px;
+            margin: auto; /* Centers the terminal vertically and horizontally */
+            background-color: #000;
+            border: 1px solid #33ff33;
+            box-shadow: 0 0 15px rgba(51, 255, 51, 0.4);
+            padding: 15px;
+            /* Flex setup ensures it shrinks nicely when the mobile keyboard appears */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            max-height: 85vh; 
+        }
+        
+        #output {
+            flex-grow: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 14px; /* Slightly smaller base font for mobile wrapping */
+        }
+        
+        #input-line {
+            display: flex;
+            align-items: center;
+            border-top: 1px dashed #33ff3333; /* Visual separator for typing area */
+            padding-top: 10px;
+        }
+        
+        #prompt {
+            color: #33ff33;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap; /* Prevents the prompt from splitting into two lines */
+        }
+        
+        #user-input {
+            background: transparent;
+            border: none;
+            color: #33ff33;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px; /* Crucial: 16px prevents iOS Safari from auto-zooming on focus */
+            flex-grow: 1;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        
+        /* Custom scrollbar for retro look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #33ff33; border-radius: 4px; }
+    </style>
+</head>
+<body>
 
-    // Inside joke or memory password 
-    const SECRET_PASSWORD = "no wifi elders + little ones"; 
+<div id="terminal">
+    <div id="output"></div>
+    <div id="input-line">
+        <span id="prompt">ARCHITECT_SYS_>$</span>
+        <input type="text" id="user-input" autofocus autocomplete="off" autocapitalize="off">
+    </div>
+</div>
 
-    const bootLines = [
-        "LOG_IN: USER_E_D",
-        "CRITICAL:_ INTERNAL_SECURITY_COMPROMISED",
-        "LEAK_DETECTED:_ PLANS LEAKED",
-        "--------------------------------------------------",
-        "THE ARCHITECT PROTOCOL HAS RE-ROUTED SURPRISE.",
-        "YOU KNOW THE STAGE, BUT YOU DO NOT KNOW THE PLAYERS.",
-        "THE NEW SURPRISE IS READY AND WAITING.",
-        "WHAT'S AT THE END OF THE JOURNY?",
-        "ANSWER THE SECURITY QUESTION TO ACCESS TICKET DATA",
-        "WHO CONSULTED US FOR RELATIONSHIP ADVICE?",
-        "HINT: GC",
+<script>
+const output = document.getElementById('output');
+const userInput = document.getElementById('user-input');
+const terminal = document.getElementById('terminal');
+
+// Inside joke or memory password 
+const SECRET_PASSWORD = "no wifi elders + little ones"; 
+
+const bootLines = [
+    "LOG_IN: USER_E_D",
+    "CRITICAL: INTERNAL_SECURITY_COMPROMISED",
+    "LEAK_DETECTED: PLANS LEAKED",
+    "--------------------------------------------------------------",
+    "THE ARCHITECT PROTOCOL HAS RE-ROUTED SURPRISE.",
+    "YOU KNOW THE STAGE, BUT YOU DO NOT KNOW THE PLAYERS.",
+    "THE NEW SURPRISE IS READY AND WAITING.",
+    "WHAT'S AT THE END OF THE JOURNEY?",
+    "ANSWER SECURITY QUESTION TO ACCESS TICKET DATA",
+    "ANSWER THE QUESTION BY PROVIDING THE CORRECT LETTER",
+    "1. What did you call me after stealing a chip at the first ftx?",
+    "A) Stubborn",
+    "B) Cadet Moise",
+    "C) Oblivious",
+    "D) Nice",
+    " "
+];
+
+const answers = [
+    "a", // Answer to Q1
+    "b", // Answer to Q2
+    "a"  // Answer to Q3
+];
+
+let answerIndex = 0;
+
+const nextQuestion = [
+    [
+        "2. What was the date we first held hands?",
+        "A) February 14th",
+        "B) February 21st",
+        "C) February 28th",
+        "D) March 7th",
         " "
-    ];
+    ], // <-- Added missing comma here
+    [
+        "3. What did my family first think of you tracking my flights?",
+        "A) They thought it was weird",
+        "B) They thought it was sweet",
+        "C) They thought it was nerdy",
+        "D) They didn't care",
+        " "
+    ]
+];
 
-    let lineIndex = 0;
+let lineIndex = 0;
 
-    function printBootSequence() {
-        if (lineIndex < bootLines.length) {
-            output.innerHTML += bootLines[lineIndex] + "\n";
-            lineIndex++;
-            output.scrollTop = output.scrollHeight;
-            setTimeout(printBootSequence, 400); 
-        }
+// Fixed the recursion logic to print lines smoothly one by one
+function printLines(lines) {
+    if (lineIndex < lines.length) {
+        output.innerHTML += lines[lineIndex] + "\n";
+        lineIndex++;
+        output.scrollTop = output.scrollHeight;
+        setTimeout(() => printLines(lines), 400); 
+    } else {
+        lineIndex = 0; // Reset for the next batch of lines
     }
+}
 
-    // Mobile UX Improvement: Tapping anywhere inside the terminal focuses the keyboard
-    terminal.addEventListener('click', function() {
-        if (!userInput.disabled) {
-            userInput.focus();
-        }
-    });
+// Mobile UX Improvement: Tapping anywhere inside the terminal focuses the keyboard
+terminal.addEventListener('click', function() {
+    if (!userInput.disabled) {
+        userInput.focus();
+    }
+});
 
-    userInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const command = userInput.value.trim();
-            output.innerHTML += `<span style="color: #fff;">ARCHITECT_SYS_>$ ${command}</span>\n`;
-            
-            if (command.toLowerCase() === SECRET_PASSWORD) {
-                output.innerHTML += `<span style="color: #00ff00; font-weight: bold;">\n[ACCESS GRANTED]</span>\n`;
-                output.innerHTML += `CRITICAL ERROR: Transmission intercepted by cast members.\n`;
-                output.innerHTML += `ERROR DETECTED AT THE VENDOR GATEWAY.\n\n`;
-                output.innerHTML += `<span style="color: #ffff00; font-weight: bold;">[SCREENSHOT TICKET UNLOCKED]</span>\n`;
-                output.innerHTML += `LINK: <a href="YOUR_SCREENSHOT_IMAGE_LINK_HERE" target="_blank" style="color: #00ffff;">Click here to claim assets</a>\n`;
-                output.innerHTML += `HINT FOR STAGE 2: Keep an eye on the program before the music starts...`;
-                //userInput.disabled = true;
-                //document.getElementById('input-line').style.display = 'none';
+userInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const command = userInput.value.trim().toLowerCase();
+        
+        // Corrected "\n" typo and kept user command uppercase for terminal aesthetic
+        output.innerHTML += `\n<span style="color: #fff;">ARCHITECT_SYS_>$ ${command.toUpperCase()}</span>\n`;
+        
+        if (command === answers[answerIndex]) {
+            if (answerIndex < nextQuestion.length) {
+                // Print the next question block
+                printLines(nextQuestion[answerIndex]);
+                answerIndex++; // Move to the next level
             } else {
-                output.innerHTML += `<span style="color: #ff3333;">ACCESS DENIED: INSUFFICIENT PERMISSIONS. OBLIVIOUS STATUS ACTIVE.</span>\n\n`;
+                // If they finish all the questions in the array
+                output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: [${SECRET_PASSWORD}]</span>\n\n`;
+                userInput.disabled = true;
+                document.getElementById('input-line').style.display = 'none';
             }
-            
-            userInput.value = '';
-            // Added a slight delay to allow mobile browsers layout recalculation before scrolling
-            setTimeout(() => {
-                output.scrollTop = output.scrollHeight;
-            }, 50);
+        } else {
+            output.innerHTML += `<span style="color: #ff3333;">ACCESS DENIED: INSUFFICIENT PERMISSIONS. OBLIVIOUS STATUS ACTIVE.</span>\n\n`;
         }
-    });
+        
+        userInput.value = '';
+        setTimeout(() => {
+            output.scrollTop = output.scrollHeight;
+        }, 50);
+    }
+});
 
-    // Start the game
-    printBootSequence();
+// Start the game by printing the initial boot sequence
+printLines(bootLines);
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
