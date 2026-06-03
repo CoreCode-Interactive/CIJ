@@ -43,6 +43,16 @@
             line-height: 1.4;
             font-size: 14px; 
         }
+
+        /* Keeps the link matching the terminal color scheme */
+        #output a {
+            color: #33ff33;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        #output a:hover {
+            color: #fff;
+        }
         
         #input-line {
             display: flex;
@@ -123,7 +133,7 @@ const answers = [
     "d", // Answer to Q5
     "a", // Answer to Q6
     "c", // Answer to Q7
-    "d", // Answer to Q8
+    "d"  // Answer to Q8
 ];
 
 let answerIndex = 0;
@@ -200,7 +210,6 @@ function printLines(lines) {
     }
 }
 
-// Mobile UX Improvement: Tapping anywhere inside terminal focuses keyboard
 terminal.addEventListener('click', function() {
     if (!userInput.disabled) {
         userInput.focus();
@@ -215,10 +224,11 @@ userInput.addEventListener('keydown', function(event) {
         
         if (command === answers[answerIndex]) {
             answerIndex++;
-            if (answerIndex < nextQuestion.length) {
+            // FIXED: Changed to <= to make sure all 7 array blocks can print before the win screen triggers
+            if (answerIndex <= nextQuestion.length) {
                 printLines(nextQuestion[answerIndex - 1]);
             } else {
-                output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: <a href="Screenshot 2026-06-03 5.53.07 PM.png">click to claim ticket</a></span>\n\n`;
+                output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: <a href="Screenshot 2026-06-03 5.53.07 PM.png" target="_blank">CLICK TO CLAIM TICKET</a></span>\n\n`;
                 userInput.disabled = true;
                 document.getElementById('input-line').style.display = 'none';
             }
