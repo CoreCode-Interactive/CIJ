@@ -118,7 +118,12 @@ const bootLines = [
 const answers = [
     "a", // Answer to Q1
     "b", // Answer to Q2
-    "a"  // Answer to Q3
+    "a", // Answer to Q3
+    "d", // Answer to Q4
+    "d", // Answer to Q5
+    "a", // Answer to Q6
+    "c", // Answer to Q7
+    "d", // Answer to Q8
 ];
 
 let answerIndex = 0;
@@ -139,6 +144,46 @@ const nextQuestion = [
         "C) They thought it was nerdy",
         "D) They didn't care",
         " "
+    ],
+    [
+        "4. Who was I scared of meeting in your family? (Choose the most correct answer)",
+        "A) Your mom",
+        "B) Your dad",
+        "C) Your brother",
+        "D) All of the above",
+        " "
+    ],
+    [
+        "5. What does sandwiches mean in the context of us?",
+        "A) A sandwich we both shared",
+        "B) A reference to star wars",
+        "C) A code word for not liking food",
+        "D) A reference to frozen",
+        " "
+    ],
+    [
+        "6. Who consulted us for relationship advice?",
+        "A) The no wifi elders + the little ones",
+        "B) OWW",
+        "C) The anders",
+        "D) The crew",
+        " "
+    ],
+    [
+        "7. Since when did I know I like you?",
+        "A) Since my first ftx",
+        "B) Since the first cadets movie night",
+        "C) Since my first time gliding with cadets",
+        "D) Since Christmas of 2024",
+        " "
+    ],
+    [
+        "8. What was the excuse for me to come over on valentine's day?",
+        "A) Gabriel would be gone that day",
+        "B) We would be able to play uno",
+        "C) I wasn't able to come the next day",
+        "D) The cake pops would have been gone the next day",
+        " "
     ]
 ];
 
@@ -149,7 +194,7 @@ function printLines(lines) {
         output.innerHTML += lines[lineIndex] + "\n";
         lineIndex++;
         output.scrollTop = output.scrollHeight;
-        setTimeout(() => printLines(lines), 400); 
+        setTimeout(() => printLines(lines), 800); 
     } else {
         lineIndex = 0; // Reset index for subsequent questions
     }
