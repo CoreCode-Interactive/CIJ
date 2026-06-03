@@ -102,6 +102,7 @@
 const output = document.getElementById('output');
 const userInput = document.getElementById('user-input');
 const terminal = document.getElementById('terminal');
+const inputLine = document.getElementById('input-line');
 
 // Inside joke or memory password 
 const SECRET_PASSWORD = "no wifi elders + little ones"; 
@@ -200,13 +201,22 @@ const nextQuestion = [
 let lineIndex = 0;
 
 function printLines(lines) {
+    // Hide the input line entirely while the machine is "typing" out text
+    inputLine.style.visibility = 'hidden';
+    userInput.disabled = true;
+
     if (lineIndex < lines.length) {
         output.innerHTML += lines[lineIndex] + "\n";
         lineIndex++;
         output.scrollTop = output.scrollHeight;
         setTimeout(() => printLines(lines), 800); 
     } else {
-        lineIndex = 0; // Reset index for subsequent questions
+        lineIndex = 0; // Reset index seamlessly
+        
+        // Bring the input box back and focus it only when text printing is complete
+        inputLine.style.visibility = 'visible';
+        userInput.disabled = false;
+        userInput.focus();
     }
 }
 
@@ -224,13 +234,12 @@ userInput.addEventListener('keydown', function(event) {
         
         if (command === answers[answerIndex]) {
             answerIndex++;
-            // FIXED: Changed to <= to make sure all 7 array blocks can print before the win screen triggers
             if (answerIndex <= nextQuestion.length) {
                 printLines(nextQuestion[answerIndex - 1]);
             } else {
                 output.innerHTML += `<span style="color: #33ff33;">\nACCESS GRANTED. DECRYPTION COMPLETE.\nTICKET DATA UNLOCKED: <a href="Screenshot 2026-06-03 5.53.07 PM.png" target="_blank">CLICK TO CLAIM TICKET</a></span>\n\n`;
                 userInput.disabled = true;
-                document.getElementById('input-line').style.display = 'none';
+                inputLine.style.display = 'none';
             }
         } else {
             output.innerHTML += `<span style="color: #ff3333;">ACCESS DENIED: INSUFFICIENT PERMISSIONS. OBLIVIOUS STATUS ACTIVE.</span>\n\n`;
